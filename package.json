@@ -4,9 +4,8 @@
   "private": false,
   "type": "module",
   "description": "A collection of Vue 3 custom directives",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es.js",
   "files": [
     "dist"
   ],
@@ -51,5 +50,9 @@
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vue-tsc": "^2.2.8"
+  },
+  "volta": {
+    "node": "22.16.0",
+    "npm": "11.4.1"
   }
 }
