@@ -1,7 +1,7 @@
 {
   "name": "vue-custom-directives",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "type": "module",
   "description": "A collection of Vue 3 custom directives",
   "main": "dist/index.js",
