@@ -1,7 +1,6 @@
 {
   "name": "@mohamedeslam04/vue-custom-directives",
   "version": "1.0.0",
-  "private": false,
   "type": "module",
   "description": "A collection of Vue 3 custom directives",
   "main": "dist/index.umd.js",
@@ -31,7 +30,6 @@
   },
   "dependencies": {
     "pinia": "^3.0.1",
-    "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
@@ -49,6 +47,7 @@
     "typescript": "^5.8.3",
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2",
+    "vue": "^3.4.21",
     "vue-tsc": "^2.2.8"
   },
   "volta": {
