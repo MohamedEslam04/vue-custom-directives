@@ -1,0 +1,9 @@
+src/
+.github/
+*.log
+node_modules/
+.env*
+vite.config.ts
+tsconfig*.json
+.eslintrc*
+.prettierrc*
