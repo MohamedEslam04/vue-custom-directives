@@ -1,6 +1,6 @@
 {
   "name": "@mohamedeslam04/vue-custom-directives",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "A collection of Vue 3 custom directives",
   "main": "dist/index.umd.js",
