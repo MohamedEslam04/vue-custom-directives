@@ -5,6 +5,7 @@
   "description": "A collection of Vue 3 custom directives",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
