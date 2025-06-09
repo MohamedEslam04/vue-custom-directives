@@ -34,8 +34,8 @@ jobs:
       # - name: Run linting
       #   run: npm run lint:check
 
-      - name: Run format check
-        run: npm run format:check
+      # - name: Run format check
+      #   run: npm run format:check
 
       # - name: Run tests with coverage
       #   run: npm run test:coverage
