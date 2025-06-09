@@ -10,8 +10,31 @@ import vResize from './v-resize'
 import vScrollLock from './v-scroll-lock'
 import vScrollTo from './v-scroll-to'
 import vTooltip from './v-tooltip'
+import vClickOutside from './v-click-outside'
+import vDraggable from './v-draggable'
+import vFocus from './v-focus'
+import vRipple from './v-ripple'
+import vUppercase from './v-uppercase'
 
-// Register directives
+// Export individual directives for tree-shaking
+export {
+    vCopy,
+    vDebounce,
+    vLazy,
+    vLongpress,
+    vPermission,
+    vResize,
+    vScrollLock,
+    vScrollTo,
+    vTooltip,
+    vClickOutside,
+    vDraggable,
+    vFocus,
+    vRipple,
+    vUppercase
+}
+
+// Plugin for installing all directives
 export default {
     install(app: App) {
         app.directive('copy', vCopy)
@@ -23,5 +46,10 @@ export default {
         app.directive('scroll-lock', vScrollLock)
         app.directive('scroll-to', vScrollTo)
         app.directive('tooltip', vTooltip)
+        app.directive('click-outside', vClickOutside)
+        app.directive('draggable', vDraggable)
+        app.directive('focus', vFocus)
+        app.directive('ripple', vRipple)
+        app.directive('uppercase', vUppercase)
     }
 }
