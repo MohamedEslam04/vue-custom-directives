@@ -1,3 +1,19 @@
+## [1.0.3](https://github.com/mohamedeslam04/vue-custom-directives/compare/v1.0.2...v1.0.3) (2025-06-09)
+
+
+### Bug Fixes
+
+* cast vue plugin to any type in vitest configuration for compatibility ([b36e084](https://github.com/mohamedeslam04/vue-custom-directives/commit/b36e084bde6638e8ab81c8951718c8d388c2b782))
+
+
+
+## [1.0.3](https://github.com/mohamedeslam04/vue-custom-directives/compare/v1.0.2...v1.0.3) (2025-06-09)
+
+
+### Bug Fixes
+
+* cast vue plugin to any type in vitest configuration for compatibility ([b36e084](https://github.com/mohamedeslam04/vue-custom-directives/commit/b36e084bde6638e8ab81c8951718c8d388c2b782))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
