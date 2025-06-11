@@ -1,65 +1,125 @@
 import type { Directive } from 'vue'
 
 interface RippleElement extends HTMLElement {
-    _rippleHandler?: (e: MouseEvent) => void
+  _rippleHandlers?: {
+    onMouseDown: (e: MouseEvent | TouchEvent) => void
+  }
 }
 
-const vRipple: Directive<RippleElement> = {
-    mounted(el) {
-        el.style.position = 'relative'
-        el.style.overflow = 'hidden'
+interface RippleOptions {
+  color?: string
+  duration?: number
+  disabled?: boolean
+}
 
-        // Add ripple styles to document if not already added
-        if (!document.querySelector('#ripple-styles')) {
-            const style = document.createElement('style')
-            style.id = 'ripple-styles'
-            style.textContent = `
-                @keyframes ripple {
-                    to {
-                        transform: scale(4);
-                        opacity: 0;
-                    }
-                }
-            `
-            document.head.appendChild(style)
-        }
+const vRipple: Directive<RippleElement, RippleOptions> = {
+  mounted(el, binding) {
+    const options: RippleOptions = {
+      color: binding.value?.color || 'rgba(255, 255, 255, 0.3)',
+      duration: binding.value?.duration || 600,
+      disabled: binding.value?.disabled || false
+    }
 
-        const handler = (e: MouseEvent) => {
-            const ripple = document.createElement('span')
-            const size = Math.max(el.clientWidth, el.clientHeight)
-            const rect = el.getBoundingClientRect()
-            
-            ripple.style.cssText = `
+    if (options.disabled) return
+
+    const createRipple = (e: MouseEvent | TouchEvent) => {
+      const rect = el.getBoundingClientRect()
+      const x = 'touches' in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left
+      const y = 'touches' in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top
+
+      const ripple = document.createElement('span')
+      const size = Math.max(rect.width, rect.height) * 2
+
+      ripple.style.cssText = `
                 position: absolute;
+                top: ${y - size / 2}px;
+                left: ${x - size / 2}px;
                 width: ${size}px;
                 height: ${size}px;
-                top: ${e.clientY - rect.top - size / 2}px;
-                left: ${e.clientX - rect.left - size / 2}px;
-                background: rgba(0, 0, 0, 0.3);
+                background: ${options.color};
                 border-radius: 50%;
                 transform: scale(0);
-                animation: ripple 0.6s linear;
+                opacity: 1;
                 pointer-events: none;
-                z-index: 1000;
+                transition: transform ${options.duration}ms ease-out, opacity ${options.duration}ms ease-out;
             `
-            
-            el.appendChild(ripple)
-            ripple.addEventListener('animationend', () => {
-                if (ripple.parentNode) {
-                    ripple.parentNode.removeChild(ripple)
-                }
-            })
-        }
 
-        el._rippleHandler = handler
-        el.addEventListener('click', handler)
-    },
-    unmounted(el) {
-        if (el._rippleHandler) {
-            el.removeEventListener('click', el._rippleHandler)
-            delete el._rippleHandler
-        }
+      el.appendChild(ripple)
+
+      // Force reflow
+      ripple.offsetHeight
+
+      ripple.style.transform = 'scale(1)'
+      ripple.style.opacity = '0'
+
+      setTimeout(() => {
+        ripple.remove()
+      }, options.duration)
     }
+
+    el._rippleHandlers = { onMouseDown: createRipple }
+    el.addEventListener('mousedown', createRipple)
+    el.addEventListener('touchstart', createRipple, { passive: true })
+  },
+
+  updated(el, binding) {
+    const options: RippleOptions = {
+      color: binding.value?.color || 'rgba(255, 255, 255, 0.3)',
+      duration: binding.value?.duration || 600,
+      disabled: binding.value?.disabled || false
+    }
+
+    if (options.disabled && el._rippleHandlers) {
+      el.removeEventListener('mousedown', el._rippleHandlers.onMouseDown)
+      el.removeEventListener('touchstart', el._rippleHandlers.onMouseDown)
+      delete el._rippleHandlers
+    } else if (!options.disabled && !el._rippleHandlers) {
+      // Re-initialize the directive
+      const createRipple = (e: MouseEvent | TouchEvent) => {
+        const rect = el.getBoundingClientRect()
+        const x = 'touches' in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left
+        const y = 'touches' in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top
+
+        const ripple = document.createElement('span')
+        const size = Math.max(rect.width, rect.height) * 2
+
+        ripple.style.cssText = `
+                    position: absolute;
+                    top: ${y - size / 2}px;
+                    left: ${x - size / 2}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${options.color};
+                    border-radius: 50%;
+                    transform: scale(0);
+                    opacity: 1;
+                    pointer-events: none;
+                    transition: transform ${options.duration}ms ease-out, opacity ${options.duration}ms ease-out;
+                `
+
+        el.appendChild(ripple)
+        ripple.offsetHeight
+        ripple.style.transform = 'scale(1)'
+        ripple.style.opacity = '0'
+
+        setTimeout(() => {
+          ripple.remove()
+        }, options.duration)
+      }
+
+      el._rippleHandlers = { onMouseDown: createRipple }
+      el.addEventListener('mousedown', createRipple)
+      el.addEventListener('touchstart', createRipple, { passive: true })
+    }
+  },
+
+  unmounted(el) {
+    if (el._rippleHandlers) {
+      el.removeEventListener('mousedown', el._rippleHandlers.onMouseDown)
+      el.removeEventListener('touchstart', el._rippleHandlers.onMouseDown)
+      delete el._rippleHandlers
+    }
+  }
 }
 
 export default vRipple

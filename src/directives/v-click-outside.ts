@@ -1,31 +1,82 @@
 import type { Directive } from 'vue'
 
 interface ClickOutsideElement extends HTMLElement {
-    _clickOutside?: (event: MouseEvent) => void
+  _clickOutsideHandler?: (e: MouseEvent | TouchEvent) => void
 }
 
-const vClickOutside: Directive<ClickOutsideElement> = {
-    mounted(el, binding) {
-        if (typeof binding.value !== 'function') {
-            console.warn('v-click-outside directive expects a function as value')
-            return
+interface ClickOutsideOptions {
+  handler: (e: MouseEvent | TouchEvent) => void
+  ignore?: string[]
+  enabled?: boolean
+}
+
+const vClickOutside: Directive<ClickOutsideElement, ClickOutsideOptions> = {
+  mounted(el, binding) {
+    const options: ClickOutsideOptions = {
+      handler: typeof binding.value === 'function' ? binding.value : binding.value.handler,
+      ignore: binding.value?.ignore || [],
+      enabled: binding.value?.enabled ?? true
+    }
+
+    if (!options.enabled) return
+
+    const handler = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement
+
+      // Check if click is inside any ignored elements
+      if (options.ignore?.some(selector => target.closest(selector))) {
+        return
+      }
+
+      // Check if click is outside the element
+      if (!el.contains(target)) {
+        options.handler(e)
+      }
+    }
+
+    el._clickOutsideHandler = handler
+    document.addEventListener('mousedown', handler)
+    document.addEventListener('touchstart', handler, { passive: true })
+  },
+
+  updated(el, binding) {
+    const options: ClickOutsideOptions = {
+      handler: typeof binding.value === 'function' ? binding.value : binding.value.handler,
+      ignore: binding.value?.ignore || [],
+      enabled: binding.value?.enabled ?? true
+    }
+
+    if (options.enabled && !el._clickOutsideHandler) {
+      // Re-initialize the directive
+      const handler = (e: MouseEvent | TouchEvent) => {
+        const target = e.target as HTMLElement
+
+        if (options.ignore?.some(selector => target.closest(selector))) {
+          return
         }
 
-        el.dataset.clickOutside = 'true'
-        const handler = (event: MouseEvent) => {
-            if (!el.contains(event.target as Node) && el !== event.target) {
-                binding.value(event)
-            }
+        if (!el.contains(target)) {
+          options.handler(e)
         }
-        el._clickOutside = handler
-        document.addEventListener('click', handler, { passive: true })
-    },
-    unmounted(el) {
-        if (el._clickOutside) {
-            document.removeEventListener('click', el._clickOutside)
-            delete el._clickOutside
-        }
+      }
+
+      el._clickOutsideHandler = handler
+      document.addEventListener('mousedown', handler)
+      document.addEventListener('touchstart', handler, { passive: true })
+    } else if (!options.enabled && el._clickOutsideHandler) {
+      document.removeEventListener('mousedown', el._clickOutsideHandler)
+      document.removeEventListener('touchstart', el._clickOutsideHandler)
+      delete el._clickOutsideHandler
     }
+  },
+
+  unmounted(el) {
+    if (el._clickOutsideHandler) {
+      document.removeEventListener('mousedown', el._clickOutsideHandler)
+      document.removeEventListener('touchstart', el._clickOutsideHandler)
+      delete el._clickOutsideHandler
+    }
+  }
 }
 
 export default vClickOutside

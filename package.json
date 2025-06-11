@@ -1,6 +1,6 @@
 {
   "name": "vue-directives-kit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "A comprehensive collection of Vue 3 custom directives for enhanced user interactions",
   "main": "dist/index.umd.js",
