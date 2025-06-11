@@ -1,6 +1,6 @@
 # Vue Custom Directives
 
-[![npm version](https://badge.fury.io/js/@mohamedeslam04%2Fvue-custom-directives.svg)](https://badge.fury.io/js/@mohamedeslam04%2Fvue-custom-directives)
+[![npm version](https://badge.fury.io/js/lib%2Fvue-custom-directives.svg)](https://badge.fury.io/js/lib%2Fvue-custom-directives)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![Vue 3](https://img.shields.io/badge/Vue-3.x-4FC08D.svg)](https://vuejs.org/)
@@ -19,15 +19,15 @@ A comprehensive collection of Vue 3 custom directives for enhanced user interact
 ## Installation
 
 ```bash
-npm install @mohamedeslam04/vue-custom-directives
+npm install vue-directives-kit
 ```
 
 ```bash
-yarn add @mohamedeslam04/vue-custom-directives
+yarn add vue-directives-kit
 ```
 
 ```bash
-pnpm add @mohamedeslam04/vue-custom-directives
+pnpm add vue-directives-kit
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ pnpm add @mohamedeslam04/vue-custom-directives
 
 ```typescript
 import { createApp } from 'vue'
-import VueCustomDirectives from '@mohamedeslam04/vue-custom-directives'
+import VueCustomDirectives from 'vue-directives-kit'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -48,7 +48,7 @@ app.mount('#app')
 
 ```typescript
 import { createApp } from 'vue'
-import { vCopy, vDebounce, vLazy } from '@mohamedeslam04/vue-custom-directives'
+import { vCopy, vDebounce, vLazy } from 'vue-directives-kit'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -61,6 +61,7 @@ app.mount('#app')
 ## Available Directives
 
 ### v-copy
+
 Copy text to clipboard when element is clicked.
 
 ```vue
@@ -71,13 +72,14 @@ Copy text to clipboard when element is clicked.
 ```
 
 ### v-debounce
+
 Debounce input events to improve performance.
 
 ```vue
 <template>
   <!-- Default: 300ms delay on input event -->
   <input v-debounce="{ callback: handleSearch, delay: 500 }" />
-  
+
   <!-- Custom event type -->
   <input v-debounce:keyup="{ callback: handleKeyup, delay: 200 }" />
 </template>
@@ -94,6 +96,7 @@ const handleKeyup = (event) => {
 ```
 
 ### v-lazy
+
 Lazy load images when they enter the viewport.
 
 ```vue
@@ -103,6 +106,7 @@ Lazy load images when they enter the viewport.
 ```
 
 ### v-longpress
+
 Trigger action on long press (800ms default).
 
 ```vue
@@ -118,6 +122,7 @@ const handleLongPress = () => {
 ```
 
 ### v-click-outside
+
 Trigger action when clicking outside the element.
 
 ```vue
@@ -135,6 +140,7 @@ const closeModal = () => {
 ```
 
 ### v-tooltip
+
 Add native tooltip to elements.
 
 ```vue
@@ -145,6 +151,7 @@ Add native tooltip to elements.
 ```
 
 ### v-scroll-lock
+
 Lock/unlock body scroll.
 
 ```vue
@@ -161,6 +168,7 @@ const isModalOpen = ref(false)
 ```
 
 ### v-scroll-to
+
 Smooth scroll to target element.
 
 ```vue
@@ -171,13 +179,12 @@ Smooth scroll to target element.
 ```
 
 ### v-resize
+
 Trigger callback when element is resized.
 
 ```vue
 <template>
-  <div v-resize="handleResize" class="resizable">
-    Resize me!
-  </div>
+  <div v-resize="handleResize" class="resizable">Resize me!</div>
 </template>
 
 <script setup>
@@ -188,6 +195,7 @@ const handleResize = () => {
 ```
 
 ### v-permission
+
 Show/hide elements based on user permissions.
 
 ```vue
@@ -198,13 +206,12 @@ Show/hide elements based on user permissions.
 ```
 
 ### v-draggable
+
 Make elements draggable.
 
 ```vue
 <template>
-  <div v-draggable class="draggable-box">
-    Drag me around!
-  </div>
+  <div v-draggable class="draggable-box">Drag me around!</div>
 </template>
 
 <style>
@@ -222,6 +229,7 @@ Make elements draggable.
 ```
 
 ### v-focus
+
 Auto-focus element when mounted.
 
 ```vue
@@ -231,6 +239,7 @@ Auto-focus element when mounted.
 ```
 
 ### v-ripple
+
 Add Material Design ripple effect.
 
 ```vue
@@ -251,6 +260,7 @@ Add Material Design ripple effect.
 ```
 
 ### v-uppercase
+
 Convert input text to uppercase.
 
 ```vue
@@ -261,17 +271,70 @@ Convert input text to uppercase.
 
 ## TypeScript Support
 
-All directives are built with TypeScript and provide full type safety:
+This package includes full TypeScript support with template autocompletion. To enable template autocompletion in your Vue 3 + TypeScript project:
+
+1. Make sure you have the following in your `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "types": ["vue-directives-kit/types"]
+  }
+}
+```
+
+2. Import the directives in your main.ts/main.js:
 
 ```typescript
-import type { App } from 'vue'
-import { vCopy, vDebounce } from '@mohamedeslam04/vue-custom-directives'
+import { createApp } from 'vue'
+import App from './App.vue'
+import { vCopy, vDebounce, vLazy /* ... other directives */ } from 'vue-directives-kit'
 
-// Type-safe directive registration
-const app: App = createApp({})
+const app = createApp(App)
+
+// Register directives
 app.directive('copy', vCopy)
 app.directive('debounce', vDebounce)
+app.directive('lazy', vLazy)
+// ... register other directives
+
+app.mount('#app')
 ```
+
+3. Now you can use the directives in your templates with full TypeScript support:
+
+```vue
+<template>
+  <!-- You'll get autocompletion for directive options -->
+  <button v-copy="{ text: 'Copy me!', onSuccess: handleSuccess }">Copy</button>
+
+  <img
+    v-lazy="{
+      src: 'image.jpg',
+      loading: 'loading.gif',
+      threshold: 0.5,
+    }"
+  />
+
+  <div
+    v-tooltip="{
+      content: 'Tooltip text',
+      placement: 'top',
+      delay: 200,
+    }"
+  >
+    Hover me
+  </div>
+</template>
+```
+
+The TypeScript support includes:
+
+- Autocompletion for directive names
+- Autocompletion for directive options
+- Type checking for option values
+- Documentation tooltips for all options
+- Type checking for callback functions
 
 ## Browser Support
 

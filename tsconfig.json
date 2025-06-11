@@ -1,11 +1,37 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "declarationDir": "dist/types",
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "lib": [ "ES2020", "DOM", "DOM.Iterable" ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [ "src/*" ]
     }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "types/vue-directives-kit.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }

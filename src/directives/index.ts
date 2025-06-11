@@ -1,3 +1,4 @@
+// src/directives/index.ts
 import type { App } from 'vue'
 
 // Import each directive

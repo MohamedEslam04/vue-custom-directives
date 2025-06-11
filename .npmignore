@@ -1,9 +1,11 @@
 src/
-.github/
 *.log
+.DS_Store
 node_modules/
-.env*
+coverage/
+.nyc_output/
+.vscode/
+.idea/
+*.tgz
 vite.config.ts
-tsconfig*.json
-.eslintrc*
-.prettierrc*
+tsconfig.json
